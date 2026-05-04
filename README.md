@@ -51,6 +51,36 @@ Useful flags: `-g` (global, into `~/`), `--list` (dry-run), `--skill <name>` (pi
 
 See [docs/examples/](docs/examples/) for concrete artifacts at each stage.
 
+## Permissions
+
+Each skill writes specific files. Pre-allowing the handoff-state writes in your agent's permission settings avoids per-prompt friction; everything else (source-file edits during `/execute`, `Bash` during `/verify`) follows your existing project conventions.
+
+| Skill | Needs |
+|---|---|
+| `setup-handoff` | Read on the repo; Write/Edit on `.handoff/config.md` |
+| `plan` | Read on the repo; Write/Edit on `.handoff/plan.md` and `.handoff/backlog.md` |
+| `execute` | Edit on source files listed in the plan; Write on `.handoff/task.md`; `Bash` for the plan's sync commands |
+| `verify` | `Bash` for test/typecheck/lint; Edit/Delete on `.handoff/{plan,task,review,backlog}.md` |
+
+### Claude Code
+
+Add to `~/.claude/settings.json` (global) or `.claude/settings.json` (project) to pre-allow handoff state writes:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Write(.handoff/**)",
+      "Edit(.handoff/**)"
+    ]
+  }
+}
+```
+
+### Other agents
+
+Cursor, Codex, Gemini CLI, Aider, etc. each have their own permission models. The skills don't reach outside `.handoff/` and the source files explicitly listed in the plan, so apply your existing scoping conventions.
+
 ## Configuration
 
 `/setup-handoff` writes `.handoff/config.md`. Edit it directly to change verification commands, response language, or doc paths. Re-running `/setup-handoff` overwrites; `/setup-handoff --auto` skips the interview entirely (falls back to asking only for items it couldn't auto-detect).

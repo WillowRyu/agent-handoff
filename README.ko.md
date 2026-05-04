@@ -6,7 +6,7 @@
 
 ## 왜 필요한가
 
-같은 컨텍스트에서 일하는 에이전트는 자신이 만든 결과물을 제대로 검증하지 못합니다. 이 플러그인은 작업을 세 개의 스킬로 나누고 boundary를 강제하며, 상태를 `.handoff/*.md`에 남겨 verify를 새 채팅에서 돌릴 수 있게 합니다. 자세한 배경은 [docs/why-handoff.md](docs/why-handoff.md) 참고.
+같은 컨텍스트에서 일하는 에이전트는 자신이 만든 결과물을 제대로 검증하지 못합니다. 이 플러그인은 작업을 세 개의 스킬로 나누고 boundary를 강제하며, 상태를 `.handoff/*.md`에 남겨 verify를 새 채팅에서 돌릴 수 있게 합니다. 자세한 배경은 [docs/why-handoff.ko.md](docs/why-handoff.ko.md) 참고.
 
 ## 네 개의 스킬
 
@@ -50,6 +50,36 @@ npx skills@latest add WillowRyu/agent-handoff --skill '*' -g -a claude-code -y
 ```
 
 각 단계의 실제 산출물 예시는 [docs/examples/](docs/examples/) 참고.
+
+## 권한 (Permissions)
+
+각 스킬은 특정 파일을 씁니다. 핸드오프 상태 파일에 대한 쓰기 권한을 에이전트 권한 설정에서 미리 허용해두면 매번 prompt에 막히는 마찰이 줄어듭니다. 나머지 (`/execute` 중 소스 파일 수정, `/verify` 중 `Bash` 실행)는 프로젝트의 기존 관행을 따르세요.
+
+| 스킬 | 필요 권한 |
+|---|---|
+| `setup-handoff` | repo에 대한 Read; `.handoff/config.md`에 대한 Write/Edit |
+| `plan` | repo에 대한 Read; `.handoff/plan.md`와 `.handoff/backlog.md`에 대한 Write/Edit |
+| `execute` | plan에 명시된 소스 파일에 대한 Edit; `.handoff/task.md`에 대한 Write; plan의 sync commands를 위한 `Bash` |
+| `verify` | test/typecheck/lint를 위한 `Bash`; `.handoff/{plan,task,review,backlog}.md`에 대한 Edit/Delete |
+
+### Claude Code
+
+`~/.claude/settings.json` (글로벌) 또는 `.claude/settings.json` (프로젝트)에 추가해서 핸드오프 상태 쓰기를 미리 허용:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Write(.handoff/**)",
+      "Edit(.handoff/**)"
+    ]
+  }
+}
+```
+
+### 다른 에이전트
+
+Cursor, Codex, Gemini CLI, Aider 등은 각자의 권한 모델이 있습니다. 스킬은 `.handoff/`와 plan에 명시된 소스 파일 외에는 손대지 않으니, 기존 scoping 관행을 그대로 적용하면 됩니다.
 
 ## 설정
 

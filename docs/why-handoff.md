@@ -1,5 +1,7 @@
 # Why Handoff
 
+**English** | [한국어](why-handoff.ko.md)
+
 If you have spent any real time pairing with a coding agent on a non-trivial codebase, you have already felt the friction this plugin tries to remove. This doc is the long version of the README's pitch — the argument for why four small skills, organized around a strict plan -> execute -> verify handoff, make agent-assisted work measurably less painful.
 
 ## The three failure modes
