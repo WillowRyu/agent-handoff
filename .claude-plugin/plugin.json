@@ -1,0 +1,9 @@
+{
+  "name": "agent-handoff",
+  "skills": [
+    "./skills/setup-handoff",
+    "./skills/plan",
+    "./skills/execute",
+    "./skills/verify"
+  ]
+}
