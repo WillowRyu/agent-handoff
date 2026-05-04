@@ -19,26 +19,26 @@
 
 ## 설치
 
-### Claude Code
+### 범용 (모든 지원 에이전트 — 권장)
+
+[`vercel-labs/skills`](https://github.com/vercel-labs/skills) 기반. Claude Code, Cursor, Codex, Gemini CLI, Aider 등 50개 이상의 에이전트에서 동작.
+
+```bash
+# 인터랙티브: 어느 에이전트에 설치할지 선택
+npx skills@latest add WillowRyu/agent-handoff
+
+# 비인터랙티브: 4개 스킬 모두 Claude Code에 글로벌 설치
+npx skills@latest add WillowRyu/agent-handoff --skill '*' -g -a claude-code -y
+```
+
+유용한 플래그: `-g` (글로벌, `~/`에 설치), `--list` (dry-run), `--skill <name>` (특정 스킬 선택), `-a <agent>` (대상 에이전트). `npx skills@latest --help` 참고.
+
+### Claude Code (플러그인 마켓플레이스 대안)
 
 ```bash
 /plugin marketplace add WillowRyu/agent-handoff
 /plugin install agent-handoff
 ```
-
-### 도구별 설치 안내
-
-<details>
-<summary>Cursor</summary>
-
-SKILL.md frontmatter는 Cursor 룰 형식과 호환됩니다. 각 `skills/<name>/SKILL.md`를 프로젝트의 `.cursor/rules/`에 복사하세요. (검증된 조합은 커뮤니티 기여로 추가 예정.)
-</details>
-
-<details>
-<summary>Codex / Gemini / Aider</summary>
-
-frontmatter (name + description + body)는 의도적으로 최소화해서 일반적인 "system instruction" 파일로도 동작합니다. 특정 도구에서 테스트해 보셨다면 issues로 알려주세요 — 설치 안내가 여기에 추가됩니다.
-</details>
 
 ## 워크플로우
 
