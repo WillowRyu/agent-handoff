@@ -41,7 +41,9 @@ How verify cleans up after writing review.md. Decisions branch on outcome.
 3. Print:
    ```
    ❌ Verification found blocking issues. See .handoff/review.md.
-   Run /plan to address them; the next cycle will inherit context.
+   Run /plan to address them. The next /plan will detect the retained
+   plan.md and review.md and read both to inherit context (see plan
+   skill's Gate "Re-entry check").
    ```
 
 ## Backlog ID assignment

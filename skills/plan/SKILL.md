@@ -11,7 +11,8 @@ Investigate the codebase, design the change, and write `.handoff/plan.md`. No co
 
 1. Read `.handoff/config.md`. If missing, abort:
    > ❌ No config found. Run `/setup-handoff` first.
-2. If `.handoff/backlog.md` exists and has any open items: see [backlog-handling.md](backlog-handling.md).
+2. **Re-entry check.** If `.handoff/plan.md` or `.handoff/review.md` already exists, this is a re-entry from a blocked cycle (verify ❌ retains them). Read both before planning anew: `review.md` lists the blockers, the previous `plan.md` shows what was being attempted. The new plan must address the blockers; if the previous plan had `> Addresses backlog: #N, #M`, carry the marker forward (the work is not done yet, the 🔄 items in `backlog.md` should stay 🔄).
+3. If `.handoff/backlog.md` exists and has any open items: see [backlog-handling.md](backlog-handling.md).
 
 ## Workflow
 
