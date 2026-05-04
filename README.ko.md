@@ -23,15 +23,17 @@
 
 [`vercel-labs/skills`](https://github.com/vercel-labs/skills) 기반. Claude Code, Cursor, Codex, Gemini CLI, Aider 등 50개 이상의 에이전트에서 동작.
 
+> **⚠️ 4개 스킬을 함께 설치하세요.** 스킬은 한 세트로 설계됐습니다: 각 스킬의 gate는 이전 단계가 쓴 상태를 기대합니다 (`/plan`은 `/setup-handoff`가 만든 `config.md`, `/execute`는 `plan.md`, `/verify`는 `task.md`). 부분 설치는 설치되지 않은 슬래시 명령을 가리키는 gate failure를 일으킵니다. `--skill '*'` (또는 `--all`)로 4개 모두 한 번에 설치하세요.
+
 ```bash
-# 인터랙티브: 어느 에이전트에 설치할지 선택
+# 인터랙티브: 어느 에이전트에 설치할지 선택 (4개 스킬 기본 선택)
 npx skills@latest add WillowRyu/agent-handoff
 
 # 비인터랙티브: 4개 스킬 모두 Claude Code에 글로벌 설치
 npx skills@latest add WillowRyu/agent-handoff --skill '*' -g -a claude-code -y
 ```
 
-유용한 플래그: `-g` (글로벌, `~/`에 설치), `--list` (dry-run), `--skill <name>` (특정 스킬 선택), `-a <agent>` (대상 에이전트). `npx skills@latest --help` 참고.
+유용한 플래그: `-g` (글로벌, `~/`에 설치), `--list` (dry-run), `--skill '*'` (모든 스킬, 권장), `-a <agent>` (대상 에이전트). `npx skills@latest --help` 참고.
 
 ### Claude Code (플러그인 마켓플레이스 대안)
 

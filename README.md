@@ -23,15 +23,17 @@ Agents working in a single context tend to skip verification of their own output
 
 Powered by [`vercel-labs/skills`](https://github.com/vercel-labs/skills), which works with Claude Code, Cursor, Codex, Gemini CLI, Aider, and 50+ other agents.
 
+> **⚠️ Install all four skills together.** The skills are designed as a set: each one's gate expects state written by the previous step (`/plan` needs `config.md` from `/setup-handoff`, `/execute` needs `plan.md`, `/verify` needs `task.md`). Partial installs will surface gate failures pointing to slash commands that aren't installed. Use `--skill '*'` (or `--all`) to install all four at once.
+
 ```bash
-# Interactive: pick which agents to install into
+# Interactive: pick which agents to install into (selects all 4 skills by default)
 npx skills@latest add WillowRyu/agent-handoff
 
 # Non-interactive: install all 4 skills globally for Claude Code
 npx skills@latest add WillowRyu/agent-handoff --skill '*' -g -a claude-code -y
 ```
 
-Useful flags: `-g` (global, into `~/`), `--list` (dry-run), `--skill <name>` (pick specific), `-a <agent>` (target agent). See `npx skills@latest --help`.
+Useful flags: `-g` (global, into `~/`), `--list` (dry-run), `--skill '*'` (all skills, recommended), `-a <agent>` (target agent). See `npx skills@latest --help`.
 
 ### Claude Code (plugin marketplace alternative)
 

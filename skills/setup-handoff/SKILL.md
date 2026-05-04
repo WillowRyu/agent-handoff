@@ -1,6 +1,6 @@
 ---
 name: setup-handoff
-description: Use once per project before /plan, /execute, /verify. Auto-scans the repo (manifests, agent guidance, doc tree, toolchain) and runs a short interview to write .handoff/config.md. Pass --auto to skip the interview and accept all auto-detected values, falling back to interview only for items that auto-detection cannot resolve.
+description: Use once per project before /plan, /execute, /verify. Auto-scans the repo (manifests, agent guidance, doc tree, toolchain) and runs a short interview to write .handoff/config.md. Pass --auto to skip the interview and accept all auto-detected values, falling back to interview only for items that auto-detection cannot resolve. Part of the agent-handoff bundle (4 skills) — install /setup-handoff, /plan, /execute, /verify together.
 ---
 
 # Setup Handoff Workflow

@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Use after /execute to verify the changes are correct. Reads .handoff/{config,plan,task}.md, runs the verification commands from config, writes review.md, and on success cleans up handoff state and resolves processed backlog items. STRONGLY recommended to run in a fresh chat — fresh context is the entire point of this stage.
+description: Use after /execute to verify the changes are correct. Reads .handoff/{config,plan,task}.md, runs the verification commands from config, writes review.md, and on success cleans up handoff state and resolves processed backlog items. STRONGLY recommended to run in a fresh chat — fresh context is the entire point of this stage. Part of the agent-handoff bundle (4 skills) — install /setup-handoff, /plan, /execute, /verify together.
 ---
 
 # Verify

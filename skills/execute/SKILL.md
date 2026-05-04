@@ -1,6 +1,6 @@
 ---
 name: execute
-description: Use after /plan to apply the planned changes. Reads .handoff/plan.md and writes/updates code exactly as specified, plus runs only the sync commands listed in the plan. Does NOT run test, typecheck, or lint commands — those belong to /verify. Pair with /plan and /verify.
+description: Use after /plan to apply the planned changes. Reads .handoff/plan.md and writes/updates code exactly as specified, plus runs only the sync commands listed in the plan. Does NOT run test, typecheck, or lint commands — those belong to /verify. Pair with /plan and /verify. Part of the agent-handoff bundle (4 skills) — install /setup-handoff, /plan, /execute, /verify together.
 ---
 
 # Execute
