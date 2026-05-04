@@ -1,5 +1,7 @@
 # Agent Handoff Skills
 
+**English** | [한국어](README.ko.md)
+
 Strict 3-stage handoff workflow for coding agents — `plan` → `execute` → `verify` — with disk-backed state for cross-context handoff.
 
 ## Why
