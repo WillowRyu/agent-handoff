@@ -9,8 +9,10 @@ Apply the changes that `plan.md` describes. Stay strictly inside the plan; never
 
 ## Gate (run first)
 
-1. Read `.handoff/config.md`. If missing → "Run `/setup-handoff` first."
-2. Read `.handoff/plan.md`. If missing → "Run `/plan` first."
+1. Read `.handoff/config.md`. If missing, abort:
+   > ❌ No config found. Run `/setup-handoff` first.
+2. Read `.handoff/plan.md`. If missing, abort:
+   > ❌ No plan found. Run `/plan` first.
 3. Both present → proceed.
 
 ## Workflow

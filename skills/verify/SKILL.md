@@ -9,7 +9,14 @@ Independent validation of `execute`'s output. Strict separation of context is th
 
 ## Gate (run first)
 
-Required files in `.handoff/`: `config.md`, `plan.md`, `task.md`. If any missing, identify which step is incomplete and tell the user which slash to run.
+Required files in `.handoff/`: `config.md`, `plan.md`, `task.md`. If any missing, abort with the matching message:
+
+- `config.md` missing:
+  > ❌ No config found. Run `/setup-handoff` first.
+- `plan.md` missing:
+  > ❌ No plan found. Run `/plan` first.
+- `task.md` missing:
+  > ❌ No task found. Run `/execute` first.
 
 ## Workflow
 
