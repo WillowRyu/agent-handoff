@@ -61,3 +61,5 @@ Which `Verification Commands` from config will run, and what we expect:
 - `<typecheck cmd>` — no errors
 - `<lint cmd>` — no errors
 ```
+
+If config's Verification Commands section uses the monorepo blockquote (per-workspace candidates), pick the commands matching the workspace this plan touches and list them here as concrete commands. If multiple workspaces are touched, list each.

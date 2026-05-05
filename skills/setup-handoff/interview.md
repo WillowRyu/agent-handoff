@@ -98,13 +98,16 @@ build:     (optional)
 response_language: ...
 handoff_dir:       ...
 commit_style:      conventional
+convention_docs:   ...
 
 ## Project Documentation Index
 
 ### Agent guidance
+- [path/to/file.md](path/to/file.md) — short description
 - ...
 
 ### Project docs
+- [path/to/file.md](path/to/file.md) — short description
 - ...
 
 ### Detected toolchain
@@ -113,4 +116,31 @@ commit_style:      conventional
 - frameworks: ...
 ```
 
+Doc-index entries use the markdown-link form `- [path](path) — desc` (em-dash, not hyphen). The short description (3–7 words) is sourced from the auto-scan description heuristic (see [auto-scan.md](auto-scan.md) "Description heuristic for doc index entries"), which folds workspace context into the phrase for sub-package files (e.g. `apps/server/README.md` → "server overview").
+
 Write to `<handoff_dir>/config.md`.
+
+### Monorepo branch — Verification Commands
+
+If the auto-scan detected a monorepo (`toolchain.monorepo` is non-null) AND the root `package.json` has no `test`/`typecheck`/`lint` scripts, write the top-level fields empty and append a blockquote listing per-workspace candidates:
+
+```
+## Verification Commands
+
+test:
+typecheck:
+lint:
+build:
+
+> Monorepo — root package.json has no test/typecheck/lint scripts.
+> Plan picks the right command per workspace from this candidate list:
+> - <workspace-1>: `<test cmd>`, `<typecheck cmd>`, `<lint cmd>`
+> - <workspace-2>: `<test cmd>`, `<typecheck cmd>`, `<lint cmd>`
+> ...
+```
+
+Use up to 8 workspaces (matching the `toolchain.workspaces` cap). Wrap each per-workspace command in backticks so it renders as inline code inside the blockquote.
+
+If the monorepo DOES have root-level test/typecheck/lint scripts (rare but possible — e.g. turbo orchestrating from root), use those root scripts as the top-level fields and skip the blockquote.
+
+If non-monorepo: keep the existing single-set behavior (write the detected commands directly into `test:`/`typecheck:`/`lint:`).

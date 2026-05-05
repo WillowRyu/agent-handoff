@@ -18,6 +18,10 @@ Required files in `.handoff/`: `config.md`, `plan.md`, `task.md`. If any missing
 - `task.md` missing:
   > ❌ No task found. Run `/execute` first.
 
+## Output language
+
+All output from this skill — conversational replies to the user, status messages, AND the written `review.md` — uses the language specified by `config.md`'s `response_language`. Default if config missing or field absent: `en`. Verification command output (test/typecheck/lint stdout/stderr) is kept verbatim in its original language; your summary of those results uses `response_language`.
+
 ## Workflow
 
 1. Read config, plan, task.
@@ -31,7 +35,3 @@ Required files in `.handoff/`: `config.md`, `plan.md`, `task.md`. If any missing
 
 - **Allowed:** run verification commands, read any file, write `.handoff/review.md`, edit `.handoff/backlog.md` (resolve 🔄 items, append non-blocking), delete `.handoff/{plan,task,review}.md` per cycle-close rules.
 - **Forbidden:** modify any code, modify `plan.md` or `task.md` mid-cycle, delete `.handoff/config.md`, delete the user's source files.
-
-## Output language
-
-`review.md` and progress messages use config's `response_language`.

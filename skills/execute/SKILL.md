@@ -15,6 +15,10 @@ Apply the changes that `plan.md` describes. Stay strictly inside the plan; never
    > ❌ No plan found. Run `/plan` first.
 3. Both present → proceed.
 
+## Output language
+
+All output from this skill — conversational replies to the user, status messages, blocker reports, AND `task.md` notes — uses the language specified by `config.md`'s `response_language`. Default if config missing or field absent: `en`. Code edits, file paths, command syntax, and shell command output stay in their native language.
+
 ## Workflow
 
 1. Read `plan.md` end-to-end.
@@ -40,7 +44,3 @@ See [boundaries.md](boundaries.md). Critical points:
   ⚠️  Blocker: <description>. Plan needs revision — run `/plan` again.
   ```
   Do NOT improvise around it.
-
-## Output language
-
-Progress messages use `config.md`'s `response_language`. Code itself remains in the language native to the project (typically English).

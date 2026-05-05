@@ -28,6 +28,10 @@ Bootstrap the `.handoff/` directory by scanning the project and writing `config.
    Next step: /plan "<task description>"
    ```
 
+## Output language
+
+Up to interview question [2], use the conversation's existing language (or `en` if unclear). The instant question [2] is answered, switch ALL subsequent output (status messages, the written `config.md`, every prompt) to the chosen `response_language`. Code, file paths, command syntax, and identifiers stay in their native language regardless.
+
 ## Boundaries
 
 - **Allowed:** read project files, write/update `.handoff/config.md`, create `.handoff/` directory.
