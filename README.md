@@ -4,6 +4,15 @@
 
 Strict 3-stage handoff workflow for coding agents — `plan` → `execute` → `verify` — with disk-backed state for cross-context handoff.
 
+```mermaid
+flowchart LR
+    A["/setup-handoff<br/><sub>config.md</sub>"] --> B["/plan<br/><sub>plan.md</sub>"]
+    B --> C["/execute<br/><sub>task.md + code</sub>"]
+    C --> D["/verify<br/><sub>review.md</sub>"]
+    D -.unresolved.-> E["backlog.md"]
+    E -.next cycle.-> B
+```
+
 ## Why
 
 Agents working in a single context tend to skip verification of their own output. This plugin splits the work into three skills with strict boundaries, persisting state to `.handoff/*.md` so verify can run in a fresh chat. See [docs/why-handoff.md](docs/why-handoff.md) for the long version.

@@ -4,6 +4,15 @@
 
 코딩 에이전트를 위한 엄격한 3단계 핸드오프 워크플로우 — `plan` → `execute` → `verify` — 컨텍스트 사이를 디스크 기반 상태로 이어줍니다.
 
+```mermaid
+flowchart LR
+    A["/setup-handoff<br/><sub>config.md</sub>"] --> B["/plan<br/><sub>plan.md</sub>"]
+    B --> C["/execute<br/><sub>task.md + code</sub>"]
+    C --> D["/verify<br/><sub>review.md</sub>"]
+    D -.미해결.-> E["backlog.md"]
+    E -.다음 사이클.-> B
+```
+
 ## 왜 필요한가
 
 같은 컨텍스트에서 일하는 에이전트는 자신이 만든 결과물을 제대로 검증하지 못합니다. 이 플러그인은 작업을 세 개의 스킬로 나누고 boundary를 강제하며, 상태를 `.handoff/*.md`에 남겨 verify를 새 채팅에서 돌릴 수 있게 합니다. 자세한 배경은 [docs/why-handoff.ko.md](docs/why-handoff.ko.md) 참고.
