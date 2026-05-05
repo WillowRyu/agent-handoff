@@ -33,6 +33,18 @@ For every file that will be created or modified, one entry:
 What changes and why. If modifying, name the function/section. Cite the convention doc that governs the pattern (from config's doc index).
 ```
 
+## Parallelization (optional)
+
+When the change list contains subsets that can be applied independently — no shared types, no shared sync command, no sequential dependency — group them here. `/execute` may dispatch each group to a separate subagent when the host agent supports parallel dispatch (e.g., Claude Code's Task tool). Otherwise execute applies them sequentially. If nothing in the change list is safely parallelizable, omit this section.
+
+```markdown
+- **Group A (independent):** `frontend/main/src/components/error-boundary.tsx`
+- **Group B (independent):** `packages/logic/src/hooks/use-user-search.ts`
+- **Group C (depends on B):** `frontend/main/src/container/{home-start,dm,notifications}/*.container.tsx`
+```
+
+Each group is a bullet. Mark dependencies inline ("depends on X") so the executor knows what must finish first.
+
 ## Sync commands (optional)
 
 Only when the change requires running shell commands beyond pure code edits — e.g. installing dependencies, running codegen, generating migrations. Each command on its own line:

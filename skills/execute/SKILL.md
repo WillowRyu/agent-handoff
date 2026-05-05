@@ -23,11 +23,12 @@ All output from this skill — conversational replies to the user, status messag
 
 1. Read `plan.md` end-to-end.
 2. Create `.handoff/task.md` with one checkbox per change list entry plus one per sync command.
-3. For each change:
+3. **Check for parallelization.** If `plan.md` has a `## Parallelization` section AND your host agent supports parallel subagent dispatch (e.g., Claude Code's Task tool), dispatch one subagent per independent group instead of applying sequentially in step 4. The dispatcher (this skill instance) owns `task.md` updates; subagents apply file edits only and report completion per file. Wait for all subagents before running sync commands (step 5). If a subagent hits a blocker, follow the blocker protocol in [boundaries.md](boundaries.md). If host doesn't support parallel dispatch or no `## Parallelization` section exists, fall back to sequential application below.
+4. For each change:
    - Apply the file edit / creation as plan describes.
    - Update task.md: mark the item complete.
-4. After code edits done, run sync commands one by one. Update task.md per command.
-5. Print:
+5. After code edits done, run sync commands one by one. Update task.md per command.
+6. Print:
    ```
    ✅ task.md updated. All planned changes applied.
    Next step: /verify (strongly recommended in a fresh chat)

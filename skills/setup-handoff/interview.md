@@ -4,12 +4,24 @@ Run one question at a time. After each answer, store the result and move on.
 
 ## Default mode (5 questions)
 
-### [1] Verification commands
+### [1] Response language
+
+```
+[1] Response language
+    Detected: <auto.language or "en (default)">
+    Use this? [Y / type ISO code (en, ko, ja, zh, ...)]
+```
+
+If the auto-scan found agent guidance files (CLAUDE.md, AGENTS.md) that contain language directives like "respond in Korean", use that as the detected default instead of `en`.
+
+After receiving the answer, switch to the chosen language for the remaining questions [2]–[5] AND the final summary print.
+
+### [2] Verification commands
 
 Show auto-detected defaults (or "(not detected)" for any null):
 
 ```
-[1] Verification commands
+[2] Verification commands
     Detected:
       test:      <auto.test or "(not detected)">
       typecheck: <auto.typecheck or "(not detected)">
@@ -20,17 +32,6 @@ Show auto-detected defaults (or "(not detected)" for any null):
 - `Y` (or Enter): use detected values; missing ones become empty
 - `edit`: ask each command one by one (fall back to a free-text prompt)
 - `skip`: leave all three empty (verify will warn later)
-
-### [2] Response language
-
-```
-[2] Response language (default: en) — change? [y/N]
-```
-
-- `N` (or Enter): keep `en`
-- `y`: free-text input (ISO code preferred, e.g. `ko`, `ja`)
-
-If the auto-scan found agent guidance files (CLAUDE.md, AGENTS.md) that contain language directives like "respond in Korean", use that as the default instead of `en`.
 
 ### [3] Handoff directory
 

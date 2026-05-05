@@ -30,7 +30,7 @@ Bootstrap the `.handoff/` directory by scanning the project and writing `config.
 
 ## Output language
 
-Up to interview question [2], use the conversation's existing language (or `en` if unclear). The instant question [2] is answered, switch ALL subsequent output (status messages, the written `config.md`, every prompt) to the chosen `response_language`. Code, file paths, command syntax, and identifiers stay in their native language regardless.
+Question [1] of the interview asks the user's response language. Up until that answer, use the conversation's existing language (or `en` if unclear). The instant question [1] is answered, switch ALL subsequent output (remaining interview prompts, status messages, the written `config.md`) to the chosen `response_language`. Code, file paths, command syntax, and identifiers stay in their native language regardless.
 
 ## Boundaries
 
