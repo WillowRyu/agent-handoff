@@ -1,6 +1,14 @@
 {
   "name": "agent-handoff",
   "version": "0.2.0",
+  "description": "Strict 3-stage handoff workflow for coding agents — plan → execute → verify — with disk-backed state for cross-context handoff.",
+  "author": {
+    "name": "WillowRyu",
+    "url": "https://github.com/WillowRyu"
+  },
+  "homepage": "https://github.com/WillowRyu/agent-handoff",
+  "repository": "https://github.com/WillowRyu/agent-handoff",
+  "license": "MIT",
   "skills": [
     "./skills/setup-handoff",
     "./skills/plan",
