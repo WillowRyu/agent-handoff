@@ -28,6 +28,13 @@ Extract the `useUserSearch` hook from `home-start.container.tsx`, `dm.container.
 
 Replace inline user-search logic with `useUserSearch` from `@universe/logic`.
 
+## Parallelization
+
+Two independent groups — `/execute` may dispatch one subagent per group:
+
+- **Group A (independent):** error boundary — Create `frontend/main/src/components/error-boundary.tsx`, then modify `frontend/main/src/container/layout/layout.container.tsx` to wrap with the new boundary
+- **Group B (independent):** user-search hook extraction — Create `packages/logic/src/hooks/use-user-search.ts`, then modify the three container files (`home-start`, `dm`, `notifications`) to use the new hook
+
 ## Test strategy
 
 - `packages/logic/src/hooks/use-user-search.spec.ts` — tests success / network error / debounce paths.

@@ -89,10 +89,14 @@ Cursor, Codex, Gemini CLI, Aider 등은 각자의 권한 모델이 있습니다.
 
 ## v1 범위
 
-- 위 4개 스킬
-- setup-handoff의 `--auto` 모드
+- 4개 스킬, 엄격한 boundary와 `.handoff/*.md` 디스크 기반 핸드오프
+- Stack-agnostic + **모노레포 인식** 스캔 (pnpm/npm/yarn/turbo/lerna/nx/cargo/go workspaces; workspace 별 docs + verification 후보)
+- Setup 인터뷰가 **응답 언어를 가장 먼저** 물음 — 그 후의 모든 출력 (status 메시지, 작성되는 `.md` 파일)이 해당 언어로
+- Doc index는 클릭 가능한 markdown 링크 + 짧은 설명
+- **Plan이 verification 범위 결정** — `/verify`는 `plan.md`의 `## Verification plan`에 적힌 명령만 실행 (docs-only 변경 같으면 rationale과 함께 전체 skip); 섹션이 없으면 `config.md`로 fallback
+- 선택적 **병렬화** — `/plan`이 `## Parallelization`에 독립 단위 식별; `/execute`가 host(Claude Code Task tool 등) 지원 시 group별 subagent로 분할 dispatch
+- setup-handoff의 `--auto` 모드 (인터뷰 스킵, 자동 감지 실패 항목만 fallback)
 - verify 통과 시 backlog 자동 정리
-- Stack-agnostic (어떤 언어/프레임워크에서도 작동 — sync 명령은 plan에서 옴)
 
 ## v1 제외 (Out of scope)
 

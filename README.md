@@ -89,10 +89,14 @@ Cursor, Codex, Gemini CLI, Aider, etc. each have their own permission models. Th
 
 ## What's in scope (v1)
 
-- 4 skills above
-- `--auto` mode for setup-handoff
+- 4 skills with strict boundaries and disk-backed handoff via `.handoff/*.md`
+- Stack-agnostic, **monorepo-aware** scanning (pnpm/npm/yarn/turbo/lerna/nx/cargo/go workspaces; per-workspace docs + verification candidates)
+- Setup interview asks **response language first** — every subsequent output (status messages, written `.md` files) uses that language
+- Doc index uses clickable markdown links with short descriptions
+- **Plan-decided verification scope** — `/verify` runs only what `plan.md`'s `## Verification plan` lists (or skips entirely with rationale for docs-only changes); falls back to `config.md` only if plan omits the section
+- Optional **parallelization** — `/plan` identifies independent units in `## Parallelization`; `/execute` can dispatch one subagent per group when the host supports it (Claude Code's Task tool, etc.)
+- `--auto` mode for setup-handoff (skip interview, per-item fallback when detection fails)
 - Backlog auto-resolve on verify pass
-- Stack-agnostic (works for any language/framework — sync commands come from your plan)
 
 ## What's out of scope (v1)
 
