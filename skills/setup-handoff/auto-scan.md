@@ -14,21 +14,46 @@ Then, if `toolchain.workspaces` is non-empty (monorepo detected), also look in e
 
 ## 2. Verification command candidates (manifests)
 
-Probe these in order; the first that yields candidates wins, but record all that exist:
+Probe in order; record ALL candidates that match (not just the first). Output is a list per category (`test[]`, `typecheck[]`, `lint[]`) so the interview/plan can pick.
+
+### package.json (most common)
+
+Two passes:
+
+**Pass 1 — script key name matching.** Look at `scripts` object keys:
+
+| Category | Matching keys |
+|---|---|
+| test | `test`, `tests`, `test:*` (e.g. `test:unit`, `test:e2e`, `test:integration`) |
+| typecheck | `typecheck`, `type-check`, `check-types`, `tsc`, `tsc:*` (e.g. `tsc:check`, `tsc:noEmit`), `tc` |
+| lint | `lint`, `lint:*`, `eslint`, `biome:lint` |
+
+**Pass 2 — script body keyword matching** (only for scripts whose names didn't match in Pass 1). Read each script body and look for tool invocations:
+
+| Category | Body keywords (any match) |
+|---|---|
+| test | `vitest`, `jest`, `mocha`, `playwright test`, `pytest`, `cargo test`, `go test` |
+| typecheck | `tsc`, `vue-tsc`, `svelte-check`, `mypy`, `pyright`, `cargo check` |
+| lint | `eslint`, `biome lint`, `oxlint`, `ruff`, `golangci-lint`, `clippy` |
+
+If a script's body matches a category but its name didn't, still record it — the interview will surface the script name (e.g., `pnpm validate`) as a candidate so the user knows what they're running.
+
+### Other manifests
 
 | Manifest | How to extract |
 |---|---|
-| `package.json` | Read `scripts` keys; match `test`, `typecheck`/`tsc`, `lint`/`eslint` |
-| `pyproject.toml` | Look for `[tool.poetry.scripts]`, `[project.scripts]`; otherwise default to `pytest`, `mypy`, `ruff check` |
+| `pyproject.toml` | Look for `[tool.poetry.scripts]`, `[project.scripts]`. Confirm test framework via `[tool.pytest.ini_options]` (→ `pytest`), `[tool.hatch.envs.*.scripts]`. Defaults if nothing found: `pytest`, `mypy`, `ruff check` |
 | `Cargo.toml` | Defaults: `cargo test`, `cargo check`, `cargo clippy` |
 | `go.mod` | Defaults: `go test ./...`, `go vet ./...`, `golangci-lint run` |
 | `Gemfile` | Defaults: `bundle exec rspec`, `bundle exec rubocop` |
-| `composer.json` | Read `scripts` keys |
-| `Makefile` | Look for targets named `test`, `typecheck`, `lint` |
+| `composer.json` | Read `scripts` keys (same key/body pass logic as package.json — adapt categories to PHP tooling: `phpunit`, `phpstan`, `phpcs`/`php-cs-fixer`) |
+| `Makefile` | Both name match (`test`, `typecheck`, `lint`, `check`, `ci`, `validate`) AND recipe body keyword scan (same body keywords as above) |
 
-If none match, mark all three (test/typecheck/lint) as "needs interview".
+If no candidates found across any manifest, mark all three categories as "needs interview".
 
-For monorepos: also probe each workspace's own manifest (e.g. `apps/server/package.json`) for the same scripts. Record per-workspace candidates separately so the interview can emit them in the Verification Commands blockquote (see interview.md "Final write").
+### Monorepos
+
+Also probe each workspace's own manifest (e.g. `apps/server/package.json`) using the same two-pass logic. Record per-workspace candidates separately so the interview can emit them in the Verification Commands blockquote (see interview.md "Final write").
 
 ## 3. Documentation directory tree
 

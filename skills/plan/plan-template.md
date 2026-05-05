@@ -66,7 +66,9 @@ Per change, what test confirms it. Reference exact test file paths.
 
 ## Verification plan
 
-Which `Verification Commands` from config will run, and what we expect:
+The exact commands `/verify` will run for this change. Pick the subset that actually applies — verify runs ONLY what's listed here, in order. Two acceptable formats:
+
+**(a) Concrete commands (the common case):**
 
 ```markdown
 - `<test cmd>` — all tests pass
@@ -74,4 +76,17 @@ Which `Verification Commands` from config will run, and what we expect:
 - `<lint cmd>` — no errors
 ```
 
-If config's Verification Commands section uses the monorepo blockquote (per-workspace candidates), pick the commands matching the workspace this plan touches and list them here as concrete commands. If multiple workspaces are touched, list each.
+For monorepos, list per-workspace commands matching the touched workspaces:
+
+```markdown
+- `pnpm -C apps/server test` — server unit tests pass
+- `pnpm -C apps/server tsc:check` — server types resolve
+```
+
+**(b) Explicit skip (when no command verification applies):**
+
+```markdown
+(none — docs-only change; plan-vs-diff check is sufficient)
+```
+
+Rationale after the em-dash is required so verify can record WHY commands were skipped. The plan-vs-diff and convention checks still run.

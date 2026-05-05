@@ -23,6 +23,7 @@ All output from this skill — conversational replies to the user, status/progre
 1. Resolve the task description: from `/plan "<arg>"` if provided, otherwise the user just typed `/plan` and we may need to surface the backlog (see backlog-handling.md).
 2. Investigate the codebase. Use the convention docs path and project doc index from config to guide what to read. Look at existing patterns the change must match.
 3. Design the change. Match the structure described in [plan-template.md](plan-template.md): change list, sync commands (if any), test strategy, verification plan.
+   - **Verification scope decision.** When filling the `## Verification plan` section, look at the change list and pick ONLY the commands that actually apply. `/verify` will run exactly what's listed there — nothing more. If the change is docs-only (or otherwise needs no command verification), write `(none — <one-line rationale>)`. For monorepos, list per-workspace commands matching the workspaces you touched, not every workspace's commands.
 4. **Identify independent units.** Look at the change list: are there subsets of files/changes that can be applied independently (no shared types, no shared sync command, no sequential dependency)? If yes, list them as parallelizable groups in plan.md's optional `## Parallelization` section (see [plan-template.md](plan-template.md)). If everything is sequential or tightly coupled, omit the section.
 5. Write `.handoff/plan.md`.
 6. If backlog items are being addressed, also mark them 🔄 in `.handoff/backlog.md` (see backlog-handling.md §3).
