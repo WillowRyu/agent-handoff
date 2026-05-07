@@ -102,12 +102,12 @@ Per change, what test confirms it. Reference exact test file paths.
 - `tests/<area>/<file>.test.ts` — verifies <behavior>
 ```
 
-## (Optional) Compile check opt-out
+## Compile check
 
-`/execute` runs `config.md`'s `typecheck` command as a final safety net by default. Add this section ONLY to opt out (e.g., docs-only plan, intentional WIP):
+Optional. `/execute` runs `config.md`'s `typecheck` command as a final safety net by default. Add this section ONLY to opt out (e.g., docs-only plan, intentional WIP) — body matches the Verification plan's `(none — rationale)` pattern:
 
 ```markdown
-compile-check: (none — docs-only change, no compile impact)
+(none — docs-only change, no compile impact)
 ```
 
 Rationale after the em-dash is required.

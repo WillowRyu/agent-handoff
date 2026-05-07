@@ -33,7 +33,7 @@ All output from this skill — conversational replies to the user, status/progre
 3. **Assess scope.** If the work has clear, sequentially-dependent stages that are each independently verifiable (e.g., DB migration → API → frontend → cleanup), propose splitting into `## Phases`. Confirm with user before committing to a multi-phase plan. Otherwise proceed as a single-cycle plan.
 4. Design the change list. Match the structure described in [plan-template.md](plan-template.md): change list, sync commands (if any), test strategy, verification plan.
    - **Verification scope decision.** When filling the `## Verification plan` section, look at the change list and pick ONLY the commands that actually apply. `/verify` will run exactly what's listed there. Typecheck is /execute's job — typically don't list it under verification. If the change is docs-only (or otherwise needs no command verification), write `(none — <one-line rationale>)`.
-   - **Compile check opt-out.** If the change should NOT trigger /execute's compile check (e.g., docs-only, intentional WIP), add a `## (Optional) Compile check opt-out` section with `compile-check: (none — <rationale>)`. Otherwise omit (default = run typecheck).
+   - **Compile check opt-out.** If the change should NOT trigger /execute's compile check (e.g., docs-only, intentional WIP), add a `## Compile check` section with body `(none — <rationale>)`. Otherwise omit the section entirely (default = run config's typecheck).
 5. **Risk-tag the change list.** For each change list item, decide whether to escalate:
 
    | Signal | Suggested tag |

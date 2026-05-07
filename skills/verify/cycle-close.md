@@ -51,9 +51,8 @@ Before deciding cleanup, inspect `plan.md` for a `## Phases` section:
 **Final-phase multi-phase plans:**
 
 1. Close backlog items as in single-cycle (the work is now done).
-2. In `plan.md`'s `## Phases` section, change the final `[🔄]` to `[x]   — completed YYYY-MM-DD`. (Audit trail before deletion.)
-3. Delete `.handoff/plan.md`, `.handoff/task.md`, `.handoff/review.md`.
-4. Print:
+2. Delete `.handoff/plan.md`, `.handoff/task.md`, `.handoff/review.md`. (No need to update phase markers before deletion — the file is going away. If `.handoff/` is git-tracked, the prior commit's mid-stream `plan.md` already preserved the phase trail.)
+3. Print:
    ```
    ✅ Final phase verified. Multi-phase task complete.
    <if backlog closed:> Closed backlog items: #N, #M

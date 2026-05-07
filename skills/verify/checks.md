@@ -23,7 +23,7 @@ For each command run, regardless of source (plan or config fallback):
   - Test command: failing test names
   - Typecheck command: error count + first 5 errors
   - Lint command: error count, distinguish "errors" vs "warnings only" (warnings only → ⚠️ not ❌)
-- Stop early only if a failure makes subsequent checks meaningless (e.g., typecheck error preventing test compilation)
+- Stop early only if a failure makes subsequent checks meaningless (e.g., test runner crashes before completing — running lint on the same broken state adds no signal)
 
 ## 3. Plan vs change diff
 
