@@ -112,7 +112,7 @@ Cursor, Codex, Gemini CLI, Aider 등은 각자의 권한 모델이 있습니다.
 - setup-handoff의 `--auto` 모드 (인터뷰 스킵, 자동 감지 실패 항목만 fallback)
 - verify 통과 시 backlog 자동 정리 (single-cycle 또는 final-phase에서만)
 
-## v1 제외 (Out of scope)
+## 제외 (Out of scope)
 
 - `/setup-handoff --refresh` (지금은 config.md 수동 편집)
 - backlog 수동 조작 (`/verify --close-backlog ...`)

@@ -1,6 +1,6 @@
 {
   "name": "agent-handoff",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Strict 3-stage handoff workflow for coding agents — plan → execute → verify — with disk-backed state for cross-context handoff.",
   "author": {
     "name": "WillowRyu",

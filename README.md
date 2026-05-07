@@ -112,7 +112,7 @@ Cursor, Codex, Gemini CLI, Aider, etc. each have their own permission models. Th
 - `--auto` mode for setup-handoff (skip interview, per-item fallback when detection fails)
 - Backlog auto-resolve on verify pass (single-cycle or final-phase only)
 
-## What's out of scope (v1)
+## What's out of scope
 
 - `/setup-handoff --refresh` (manually edit config for now)
 - Manual backlog operations (`/verify --close-backlog ...`)

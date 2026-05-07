@@ -25,9 +25,9 @@ Backlog items are closed only on the FINAL phase's verify pass (or immediately o
 
 Two or three sentences. Why are we doing this? What's the user-visible outcome?
 
-## (Optional) Phases
+## Phases
 
-Use only when the task is large enough to span multiple plan→execute→verify cycles. Each phase is an independent verifiable unit (e.g., DB migration → API layer → frontend → cleanup). Format:
+Optional. Use only when the task is large enough to span multiple plan→execute→verify cycles. Each phase is an independent verifiable unit (e.g., DB migration → API layer → frontend → cleanup). Format:
 
 ```markdown
 - [x] Phase 1: <title>   — completed YYYY-MM-DD
