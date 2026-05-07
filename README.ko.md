@@ -73,7 +73,9 @@ npx skills@latest add WillowRyu/agent-handoff --skill '*' -g -a claude-code -y
 | `setup-handoff` | repo에 대한 Read; `.handoff/config.md`에 대한 Write/Edit |
 | `plan` | repo에 대한 Read; `.handoff/plan.md`와 `.handoff/backlog.md`에 대한 Write/Edit |
 | `execute` | plan에 명시된 소스 파일에 대한 Edit; `.handoff/task.md`에 대한 Write; plan의 sync commands와 config의 `typecheck`를 위한 `Bash` |
-| `verify` | test/lint를 위한 `Bash` (typecheck는 execute가 담당); `.handoff/{plan,task,review,backlog}.md`에 대한 Edit/Delete |
+| `verify` | test/lint와 `git diff`(실제 변경분과 plan 비교용)을 위한 `Bash`; `.handoff/{plan,task,review,backlog}.md`에 대한 Edit/Delete |
+
+> **프로젝트 요구사항:** 프로젝트는 git 저장소여야 합니다. `/verify`의 plan-vs-code 검증이 `git diff`로 plan에 적힌 변경이 실제로 들어갔는지 확인하고 plan 밖 변경도 잡아냅니다. git 환경이 아니면 이 검증이 파일 존재 확인 수준으로 약화됩니다.
 
 ### Claude Code
 
@@ -96,7 +98,9 @@ Cursor, Codex, Gemini CLI, Aider 등은 각자의 권한 모델이 있습니다.
 
 ## 설정
 
-`/setup-handoff`이 `.handoff/config.md`를 작성합니다. 검증 명령, 응답 언어, 문서 경로를 바꾸려면 직접 편집하세요. `/setup-handoff`를 다시 돌리면 덮어쓰고, `/setup-handoff --auto`는 인터뷰를 완전히 건너뜁니다 (자동 감지에 실패한 항목만 묻는 fallback 포함).
+`/setup-handoff`이 `.handoff/config.md`를 작성합니다. 평범한 markdown 파일이라 언제든 직접 편집하거나 에이전트에게 편집을 시킬 수 있습니다 — 검증 명령, 응답 언어, 컨벤션 doc 경로, 문서 인덱스 추가/수정 모두 자유. 스킬들은 사이클 도중 `config.md`를 건드리지 않으므로 (`/plan`, `/execute`, `/verify`는 read-only) 사이클 사이에 점진적으로 편집해도 안전합니다.
+
+`/setup-handoff`를 다시 돌리면 `config.md`를 처음부터 다시 작성 (커스텀 추가분 유실), `/setup-handoff --auto`는 인터뷰를 완전히 건너뜁니다 (자동 감지 실패 항목만 묻는 fallback 포함).
 
 ## 범위
 

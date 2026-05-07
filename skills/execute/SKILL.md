@@ -25,6 +25,8 @@ All output from this skill — conversational replies to the user, status messag
 1. Read `plan.md` end-to-end.
 2. Create `.handoff/task.md` with one checkbox per change list entry plus one per sync command.
 3. **Check for parallelization.** If `plan.md` has a `## Parallelization` section AND your host agent supports parallel subagent dispatch (e.g., Claude Code's Task tool), dispatch one subagent per independent group instead of applying sequentially in step 4. The dispatcher (this skill instance) owns `task.md` updates; subagents apply file edits only and report completion per file. Wait for all subagents before running sync commands (step 5). If a subagent hits a blocker, follow the blocker protocol in [boundaries.md](boundaries.md). If host doesn't support parallel dispatch or no `## Parallelization` section exists, fall back to sequential application below.
+
+   **Interaction with risk tags**: in parallel dispatch mode, the per-item compile-check granularity from step 4 does NOT apply — subagents do file edits only, and only the final safety-net check (step 6) runs. If a plan has `medium` or `high` risk-tagged items inside a parallelizable group, those items lose their per-item compile-check safety. Plan authors are expected to keep high-risk items out of `## Parallelization` groups (see plan/SKILL.md step 6); if you encounter this combination during execute, proceed but note it in the final task.md notes section.
 4. For each change list item, apply per its **risk tag** (plans without tags are treated as low):
    - **low / untagged**: apply edits, update task.md after each. No per-item compile check.
    - **medium**: apply edits → run compile check (config's `typecheck`, if set) → update task.md. On failure, see step 6.

@@ -73,7 +73,9 @@ Each skill writes specific files. Pre-allowing the handoff-state writes in your 
 | `setup-handoff` | Read on the repo; Write/Edit on `.handoff/config.md` |
 | `plan` | Read on the repo; Write/Edit on `.handoff/plan.md` and `.handoff/backlog.md` |
 | `execute` | Edit on source files listed in the plan; Write on `.handoff/task.md`; `Bash` for the plan's sync commands AND config's `typecheck` |
-| `verify` | `Bash` for test/lint (typecheck stays with execute); Edit/Delete on `.handoff/{plan,task,review,backlog}.md` |
+| `verify` | `Bash` for test/lint AND `git diff` (used to compare actual changes against plan); Edit/Delete on `.handoff/{plan,task,review,backlog}.md` |
+
+> **Project requirement:** the project must be a git repository. `/verify`'s plan-vs-code check uses `git diff` to confirm planned changes were actually applied (and to flag out-of-plan changes). In a non-git directory, this check degrades to a file-existence check only.
 
 ### Claude Code
 
@@ -96,7 +98,9 @@ Cursor, Codex, Gemini CLI, Aider, etc. each have their own permission models. Th
 
 ## Configuration
 
-`/setup-handoff` writes `.handoff/config.md`. Edit it directly to change verification commands, response language, or doc paths. Re-running `/setup-handoff` overwrites; `/setup-handoff --auto` skips the interview entirely (falls back to asking only for items it couldn't auto-detect).
+`/setup-handoff` writes `.handoff/config.md`. The file is plain markdown — edit it directly, or ask your agent to edit it, at any time to update verification commands, response language, the convention doc path, or the documentation index. The skills don't touch `config.md` mid-cycle (`/plan`, `/execute`, `/verify` only read it), so incremental edits between cycles are safe.
+
+Re-running `/setup-handoff` rewrites `config.md` from scratch (overwriting any custom additions); `/setup-handoff --auto` skips the interview entirely and falls back to asking only for items it couldn't auto-detect.
 
 ## What's in scope
 

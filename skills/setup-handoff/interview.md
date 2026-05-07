@@ -18,10 +18,11 @@ After receiving the answer, switch to the chosen language for the remaining ques
 
 ### [2] Verification commands
 
-Show auto-detected defaults (or "(not detected)" for any null):
+Show auto-detected defaults (or "(not detected)" for any null). Include a one-line note in the prompt explaining ownership so the user knows which command runs where:
 
 ```
 [2] Verification commands
+    (typecheck → run by /execute as compile check; test + lint → run by /verify)
     Detected:
       test:      <auto.test or "(not detected)">
       typecheck: <auto.typecheck or "(not detected)">
