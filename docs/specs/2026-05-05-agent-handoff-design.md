@@ -130,11 +130,10 @@
 |---|---|---|---|
 | 1 | Verification commands | **강함** — manifest scripts 매칭 | **Enter** (default 그대로) |
 | 2 | Response language | 기본값 = `en`. CLAUDE.md/AGENTS.md에 언어 룰이 있으면 추측 | 보통 **Enter** |
-| 3 | Handoff directory | 고정값 = `.handoff/` | 보통 **Enter** |
-| 4 | Convention docs path | **강함** — `conventions/rules/guidelines/patterns` 키워드 + 흔한 위치 ★ 표시 | 후보 중 **숫자 한 키** |
-| 5 | Project doc index | **가장 강함** — docs 트리 + agent guidance + toolchain 모두 자동 수집 | **Y** (confirm) |
+| 3 | Convention docs path | **강함** — `conventions/rules/guidelines/patterns` 키워드 + 흔한 위치 ★ 표시 | 후보 중 **숫자 한 키** |
+| 4 | Project doc index | **가장 강함** — docs 트리 + agent guidance + toolchain 모두 자동 수집 | **Y** (confirm) |
 
-→ 기본 모드에서도 키 입력 5번 정도, 1분 미만.
+→ 기본 모드에서도 키 입력 4번 정도, 1분 미만. `handoff_dir`은 항상 `.handoff/`로 고정 (질문 안 함).
 
 ### 5.3 두 가지 실행 모드
 
@@ -147,6 +146,8 @@
 > "Couldn't auto-detect [item]. Falling back to interview for that item."
 → 그 항목만 사용자에게 묻고, 나머지 자동값은 그대로. `--auto`의 가치를 살리면서 안전.
 
+**Non-interactive fallback** — `AskUserQuestion`이 차단된 환경 (don't-ask 모드 등)에서는 묻는 fallback 대신 기본값을 silent하게 사용 (`response_language: en`, verification commands는 empty, convention/doc index는 detected만). 작성 후 `⚠️ Used defaults for: ...` 한 줄 안내. 에러로 흐름이 끊기지 않게 함.
+
 ### 5.4 인터뷰 스크립트 (기본 모드)
 
 ```
@@ -158,12 +159,11 @@
     Use these? [Y/edit/skip]
 
 [2] Response language          (default: en)         [y/N to change]
-[3] Handoff directory          (default: .handoff/)  [y/N to change]
-[4] Convention docs path
+[3] Convention docs path
     Detected: ★ docs/conventions/  /  docs/features/  /  .agent/rules/
     Which? [1/2/3/none]
 
-[5] Project documentation index
+[4] Project documentation index
     Auto-collected:
       Agent guidance: CLAUDE.md, AGENTS.md
       Docs:           README, docs/conventions/ (12), docs/features/ (47)

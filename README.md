@@ -66,7 +66,7 @@ See [docs/examples/](docs/examples/) for concrete artifacts at each stage.
 
 ## Permissions
 
-Each skill writes specific files. Pre-allowing the handoff-state writes in your agent's permission settings avoids per-prompt friction; everything else (source-file edits during `/execute`, `Bash` during `/verify`) follows your existing project conventions.
+Each skill writes specific files. The bundled hook (`hooks/hooks.json`) auto-approves `.handoff/**` writes when installed as a Claude Code plugin. Other install paths and other agents need explicit permission rules.
 
 | Skill | Needs |
 |---|---|
@@ -79,7 +79,9 @@ Each skill writes specific files. Pre-allowing the handoff-state writes in your 
 
 ### Claude Code
 
-Add to `~/.claude/settings.json` (global) or `.claude/settings.json` (project) to pre-allow handoff state writes:
+**Plugin install (`/plugin install agent-handoff`)**: A bundled PreToolUse hook in `hooks/hooks.json` auto-approves writes to `.handoff/**`. After accepting the first prompt to load the plugin, no further per-write prompts appear.
+
+**`npx skills` install or other paths**: `npx skills add` copies SKILL.md files only — the hook doesn't come along. Add explicit permission rules to your settings:
 
 ```json
 {
@@ -91,6 +93,8 @@ Add to `~/.claude/settings.json` (global) or `.claude/settings.json` (project) t
   }
 }
 ```
+
+Add to `~/.claude/settings.json` (global) or `.claude/settings.json` (project).
 
 ### Other agents
 

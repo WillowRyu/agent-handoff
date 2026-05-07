@@ -150,7 +150,7 @@ Bootstrap the `.handoff/` directory by scanning the project and writing `config.
 
 | Mode | Auto-scan | Interview |
 |---|:---:|:---:|
-| `/setup-handoff` (default) | always | 5 questions, ~1 min |
+| `/setup-handoff` (default) | always | 4 questions, ~1 min |
 | `/setup-handoff --auto` | always | skipped; falls back to asking ONLY for items auto-detection couldn't resolve |
 
 ## Workflow
@@ -158,7 +158,7 @@ Bootstrap the `.handoff/` directory by scanning the project and writing `config.
 1. Detect mode (default vs `--auto`).
 2. Run auto-scan → see [auto-scan.md](auto-scan.md).
 3. Decide per item: use auto-detected value, or ask the user.
-   - Default mode: ask all 5 items, presenting auto-detected values as defaults → see [interview.md](interview.md).
+   - Default mode: ask all 4 items, presenting auto-detected values as defaults → see [interview.md](interview.md).
    - `--auto` mode: use auto-detected values silently. For items where detection failed, fall back to asking just that one (announce the fallback).
 4. Create `.handoff/` if missing. Write `.handoff/config.md`.
 5. Print summary:
@@ -264,7 +264,7 @@ Contents (mirror spec §5.4 verbatim, plus `--auto` fallback rules):
 
 Run one question at a time. After each answer, store the result and move on.
 
-## Default mode (5 questions)
+## Default mode (4 questions)
 
 ### [1] Verification commands
 
@@ -294,33 +294,24 @@ Show auto-detected defaults (or "(not detected)" for any null):
 
 If the auto-scan found agent guidance files (CLAUDE.md, AGENTS.md) that contain language directives like "respond in Korean", use that as the default instead of `en`.
 
-### [3] Handoff directory
-
-```
-[3] Handoff directory (default: .handoff/) — change? [y/N]
-```
-
-- `N` (or Enter): use `.handoff/`
-- `y`: free-text input
-
-### [4] Convention docs path
+### [3] Convention docs path
 
 If `convention_doc_candidates` is non-empty:
 
 ```
-[4] Convention docs path
+[3] Convention docs path
     Detected:
       ★ <strongest match>
         <other candidates>
     Which? [1/2/.../none]
 ```
 
-If no candidates: `[4] Convention docs path? Free-text or 'none'.`
+If no candidates: `[3] Convention docs path? Free-text or 'none'.`
 
-### [5] Project documentation index
+### [4] Project documentation index
 
 ```
-[5] Project documentation index
+[4] Project documentation index
     Auto-collected:
       Agent guidance: <list>
       Docs:           <doc_tree summary>
@@ -333,7 +324,7 @@ If no candidates: `[4] Convention docs path? Free-text or 'none'.`
 
 ## --auto mode
 
-For each of the 5 items, if auto-scan produced a non-null value: use it silently. If null:
+For each of the 4 items, if auto-scan produced a non-null value: use it silently. If null:
 
 ```
 ⚠️  Couldn't auto-detect [<item name>]. Falling back to interview for this item.
@@ -341,7 +332,25 @@ For each of the 5 items, if auto-scan produced a non-null value: use it silently
 
 Then ask only that item using the default-mode prompt.
 
-After all items resolved, write `.handoff/config.md` (no further confirmation).
+### Fallback when interactive prompts are blocked
+
+If `AskUserQuestion` (or any interactive prompt) is denied — for example, when running in don't-ask mode or a non-interactive environment — do NOT error out. Use these defaults silently for any item that needs user input but cannot be asked:
+
+| Item | Fallback default |
+|---|---|
+| `response_language` | `en` |
+| `test` / `typecheck` / `lint` | empty (verify will warn later) |
+| `convention_docs` | empty |
+| `doc_index` | only auto-detected entries |
+
+`handoff_dir` is always `.handoff` and never asked.
+
+After all items resolved, write `.handoff/config.md`. If any item used a fallback default (because interactive prompts were blocked), append one summary note before the final summary print:
+
+```
+⚠️  Used defaults for: <comma-separated item names>. Interactive prompts were unavailable.
+    Edit .handoff/config.md to adjust.
+```
 
 ## Final write
 
@@ -358,7 +367,7 @@ build:     (optional)
 
 ## Conventions
 response_language: ...
-handoff_dir:       ...
+handoff_dir:       .handoff
 commit_style:      conventional
 
 ## Project Documentation Index
@@ -375,7 +384,7 @@ commit_style:      conventional
 - frameworks: ...
 ```
 
-Write to `<handoff_dir>/config.md`.
+Write to `.handoff/config.md`.
 ```
 
 - [ ] **Step 4: Hand-walk the spec scenarios touching this skill**

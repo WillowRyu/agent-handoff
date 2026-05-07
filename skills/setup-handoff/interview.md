@@ -2,7 +2,7 @@
 
 Run one question at a time. After each answer, store the result and move on.
 
-## Default mode (5 questions)
+## Default mode (4 questions)
 
 ### [1] Response language
 
@@ -14,7 +14,7 @@ Run one question at a time. After each answer, store the result and move on.
 
 If the auto-scan found agent guidance files (CLAUDE.md, AGENTS.md) that contain language directives like "respond in Korean", use that as the detected default instead of `en`.
 
-After receiving the answer, switch to the chosen language for the remaining questions [2]–[5] AND the final summary print.
+After receiving the answer, switch to the chosen language for the remaining questions [2]–[4] AND the final summary print.
 
 ### [2] Verification commands
 
@@ -34,33 +34,24 @@ Show auto-detected defaults (or "(not detected)" for any null). Include a one-li
 - `edit`: ask each command one by one (fall back to a free-text prompt)
 - `skip`: leave all three empty (verify will warn later)
 
-### [3] Handoff directory
-
-```
-[3] Handoff directory (default: .handoff/) — change? [y/N]
-```
-
-- `N` (or Enter): use `.handoff/`
-- `y`: free-text input
-
-### [4] Convention docs path
+### [3] Convention docs path
 
 If `convention_doc_candidates` is non-empty:
 
 ```
-[4] Convention docs path
+[3] Convention docs path
     Detected:
       ★ <strongest match>
         <other candidates>
     Which? [1/2/.../none]
 ```
 
-If no candidates: `[4] Convention docs path? Free-text or 'none'.`
+If no candidates: `[3] Convention docs path? Free-text or 'none'.`
 
-### [5] Project documentation index
+### [4] Project documentation index
 
 ```
-[5] Project documentation index
+[4] Project documentation index
     Auto-collected:
       Agent guidance: <list>
       Docs:           <doc_tree summary>
@@ -73,7 +64,7 @@ If no candidates: `[4] Convention docs path? Free-text or 'none'.`
 
 ## --auto mode
 
-For each of the 5 items, if auto-scan produced a non-null value: use it silently. If null:
+For each of the 4 items, if auto-scan produced a non-null value: use it silently. If null:
 
 ```
 ⚠️  Couldn't auto-detect [<item name>]. Falling back to interview for this item.
@@ -81,7 +72,25 @@ For each of the 5 items, if auto-scan produced a non-null value: use it silently
 
 Then ask only that item using the default-mode prompt.
 
-After all items resolved, write `.handoff/config.md` (no further confirmation).
+### Fallback when interactive prompts are blocked
+
+If `AskUserQuestion` (or any interactive prompt) is denied — for example, when running in don't-ask mode or a non-interactive environment — do NOT error out. Use these defaults silently for any item that needs user input but cannot be asked:
+
+| Item | Fallback default |
+|---|---|
+| `response_language` | `en` |
+| `test` / `typecheck` / `lint` | empty (verify will warn later) |
+| `convention_docs` | empty |
+| `doc_index` | only auto-detected entries |
+
+`handoff_dir` is always `.handoff` and never asked.
+
+After all items resolved, write `.handoff/config.md`. If any item used a fallback default (because interactive prompts were blocked), append one summary note before the final summary print:
+
+```
+⚠️  Used defaults for: <comma-separated item names>. Interactive prompts were unavailable.
+    Edit .handoff/config.md to adjust.
+```
 
 ## Final write
 
@@ -98,7 +107,7 @@ build:     (optional)
 
 ## Conventions
 response_language: ...
-handoff_dir:       ...
+handoff_dir:       .handoff
 commit_style:      conventional
 convention_docs:   ...
 
@@ -120,7 +129,7 @@ convention_docs:   ...
 
 Doc-index entries use the markdown-link form `- [path](path) — desc` (em-dash, not hyphen). The short description (3–7 words) is sourced from the auto-scan description heuristic (see [auto-scan.md](auto-scan.md) "Description heuristic for doc index entries"), which folds workspace context into the phrase for sub-package files (e.g. `apps/server/README.md` → "server overview").
 
-Write to `<handoff_dir>/config.md`.
+Write to `.handoff/config.md`.
 
 ### Monorepo branch — Verification Commands
 

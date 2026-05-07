@@ -66,7 +66,7 @@ npx skills@latest add WillowRyu/agent-handoff --skill '*' -g -a claude-code -y
 
 ## 권한 (Permissions)
 
-각 스킬은 특정 파일을 씁니다. 핸드오프 상태 파일에 대한 쓰기 권한을 에이전트 권한 설정에서 미리 허용해두면 매번 prompt에 막히는 마찰이 줄어듭니다. 나머지 (`/execute` 중 소스 파일 수정, `/verify` 중 `Bash` 실행)는 프로젝트의 기존 관행을 따르세요.
+각 스킬은 특정 파일을 씁니다. 플러그인으로 설치된 경우 번들된 hook (`hooks/hooks.json`)이 `.handoff/**` 쓰기를 자동 승인합니다. 다른 설치 경로나 다른 에이전트는 명시적인 권한 규칙이 필요합니다.
 
 | 스킬 | 필요 권한 |
 |---|---|
@@ -79,7 +79,9 @@ npx skills@latest add WillowRyu/agent-handoff --skill '*' -g -a claude-code -y
 
 ### Claude Code
 
-`~/.claude/settings.json` (글로벌) 또는 `.claude/settings.json` (프로젝트)에 추가해서 핸드오프 상태 쓰기를 미리 허용:
+**플러그인 설치 (`/plugin install agent-handoff`)**: 번들된 PreToolUse hook (`hooks/hooks.json`)이 `.handoff/**` 쓰기를 자동 승인합니다. 플러그인 로드를 위한 첫 prompt만 수락하면 그 후 매번 권한을 묻지 않습니다.
+
+**`npx skills` 설치 또는 다른 경로**: `npx skills add`는 SKILL.md 파일만 복사하고 hook은 같이 안 옵니다. settings에 권한 규칙을 명시적으로 추가하세요:
 
 ```json
 {
@@ -91,6 +93,8 @@ npx skills@latest add WillowRyu/agent-handoff --skill '*' -g -a claude-code -y
   }
 }
 ```
+
+`~/.claude/settings.json` (글로벌) 또는 `.claude/settings.json` (프로젝트)에 추가.
 
 ### 다른 에이전트
 

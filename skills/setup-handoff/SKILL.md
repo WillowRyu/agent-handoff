@@ -11,7 +11,7 @@ Bootstrap the `.handoff/` directory by scanning the project and writing `config.
 
 | Mode | Auto-scan | Interview |
 |---|:---:|:---:|
-| `/setup-handoff` (default) | always | 5 questions, ~1 min |
+| `/setup-handoff` (default) | always | 4 questions, ~1 min |
 | `/setup-handoff --auto` | always | skipped; falls back to asking ONLY for items auto-detection couldn't resolve |
 
 ## Workflow
@@ -19,7 +19,7 @@ Bootstrap the `.handoff/` directory by scanning the project and writing `config.
 1. Detect mode (default vs `--auto`).
 2. Run auto-scan → see [auto-scan.md](auto-scan.md).
 3. Decide per item: use auto-detected value, or ask the user.
-   - Default mode: ask all 5 items, presenting auto-detected values as defaults → see [interview.md](interview.md).
+   - Default mode: ask all 4 items, presenting auto-detected values as defaults → see [interview.md](interview.md).
    - `--auto` mode: use auto-detected values silently. For items where detection failed, fall back to asking just that one (announce the fallback).
 4. Create `.handoff/` if missing. Write `.handoff/config.md`.
 5. Print summary:
