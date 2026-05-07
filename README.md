@@ -23,8 +23,10 @@ Agents working in a single context tend to skip verification of their own output
 |---|---|---|---|---|
 | `/setup-handoff` | once per project | manifests, agent docs, doc tree | `.handoff/config.md` | code, build commands |
 | `/plan` | starting a feature/fix | config, backlog | `.handoff/plan.md` | code, build commands |
-| `/execute` | after `/plan` | config, plan | `.handoff/task.md` + code | test/typecheck/lint |
-| `/verify` | after `/execute`, fresh chat | config, plan, task | `.handoff/review.md`, cleans up | code |
+| `/execute` | after `/plan` | config, plan | `.handoff/task.md` + code | tests, lint, mutations outside plan |
+| `/verify` | after `/execute`, fresh chat | config, plan, task | `.handoff/review.md`, cleans up | code, typecheck (already run by execute) |
+
+`/execute` runs the **read-only compile check** (config's `typecheck`) as a safety net — type errors get caught one step earlier instead of waiting for `/verify`. Tests, lint, and plan-vs-code judgment stay with `/verify` (fresh context is the point).
 
 ## Install
 
@@ -70,8 +72,8 @@ Each skill writes specific files. Pre-allowing the handoff-state writes in your 
 |---|---|
 | `setup-handoff` | Read on the repo; Write/Edit on `.handoff/config.md` |
 | `plan` | Read on the repo; Write/Edit on `.handoff/plan.md` and `.handoff/backlog.md` |
-| `execute` | Edit on source files listed in the plan; Write on `.handoff/task.md`; `Bash` for the plan's sync commands |
-| `verify` | `Bash` for test/typecheck/lint; Edit/Delete on `.handoff/{plan,task,review,backlog}.md` |
+| `execute` | Edit on source files listed in the plan; Write on `.handoff/task.md`; `Bash` for the plan's sync commands AND config's `typecheck` |
+| `verify` | `Bash` for test/lint (typecheck stays with execute); Edit/Delete on `.handoff/{plan,task,review,backlog}.md` |
 
 ### Claude Code
 
@@ -96,16 +98,19 @@ Cursor, Codex, Gemini CLI, Aider, etc. each have their own permission models. Th
 
 `/setup-handoff` writes `.handoff/config.md`. Edit it directly to change verification commands, response language, or doc paths. Re-running `/setup-handoff` overwrites; `/setup-handoff --auto` skips the interview entirely (falls back to asking only for items it couldn't auto-detect).
 
-## What's in scope (v1)
+## What's in scope
 
 - 4 skills with strict boundaries and disk-backed handoff via `.handoff/*.md`
 - Stack-agnostic, **monorepo-aware** scanning (pnpm/npm/yarn/turbo/lerna/nx/cargo/go workspaces; per-workspace docs + verification candidates)
 - Setup interview asks **response language first** — every subsequent output (status messages, written `.md` files) uses that language
 - Doc index uses clickable markdown links with short descriptions
 - **Plan-decided verification scope** — `/verify` runs only what `plan.md`'s `## Verification plan` lists (or skips entirely with rationale for docs-only changes); falls back to `config.md` only if plan omits the section
+- **Compile check in `/execute`** — config's `typecheck` runs as the safety net inside execute; type errors caught before verify, with single in-plan fix attempt before blocker (v0.3.0)
+- **Risk-tagged change list items** — plan items can carry `low` / `medium` / `high` risk; execute uses tags to adjust per-item check granularity (low = end-of-batch only, medium = per-item compile check, high = per-item check + per-item task.md update). Tags govern granularity, never authority. (v0.3.0)
+- **Multi-phase plans** — `## Phases` section lets a single plan span multiple plan→execute→verify cycles; verify advances markers on pass and retains plan.md until the final phase. Backlog closure deferred to last phase. (v0.3.0)
 - Optional **parallelization** — `/plan` identifies independent units in `## Parallelization`; `/execute` can dispatch one subagent per group when the host supports it (Claude Code's Task tool, etc.)
 - `--auto` mode for setup-handoff (skip interview, per-item fallback when detection fails)
-- Backlog auto-resolve on verify pass
+- Backlog auto-resolve on verify pass (single-cycle or final-phase only)
 
 ## What's out of scope (v1)
 

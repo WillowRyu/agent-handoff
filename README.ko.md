@@ -23,8 +23,10 @@ flowchart LR
 |---|---|---|---|---|
 | `/setup-handoff` | 프로젝트당 한 번 | manifest, 에이전트 가이드, 문서 트리 | `.handoff/config.md` | 코드, 빌드 명령 |
 | `/plan` | 기능/수정 시작 시 | config, backlog | `.handoff/plan.md` | 코드, 빌드 명령 |
-| `/execute` | `/plan` 이후 | config, plan | `.handoff/task.md` + 코드 | test/typecheck/lint |
-| `/verify` | `/execute` 이후, 새 채팅 | config, plan, task | `.handoff/review.md`, 정리 | 코드 |
+| `/execute` | `/plan` 이후 | config, plan | `.handoff/task.md` + 코드 | test, lint, plan 밖 변경 |
+| `/verify` | `/execute` 이후, 새 채팅 | config, plan, task | `.handoff/review.md`, 정리 | 코드, typecheck (execute가 이미 실행) |
+
+`/execute`는 config의 `typecheck`를 **read-only 컴파일 체크**로 실행합니다 — 타입 에러를 verify까지 끌고 가지 않고 한 단계 일찍 잡음. test/lint/plan-vs-code 판단은 `/verify`에 그대로 (fresh context가 핵심).
 
 ## 설치
 
@@ -70,8 +72,8 @@ npx skills@latest add WillowRyu/agent-handoff --skill '*' -g -a claude-code -y
 |---|---|
 | `setup-handoff` | repo에 대한 Read; `.handoff/config.md`에 대한 Write/Edit |
 | `plan` | repo에 대한 Read; `.handoff/plan.md`와 `.handoff/backlog.md`에 대한 Write/Edit |
-| `execute` | plan에 명시된 소스 파일에 대한 Edit; `.handoff/task.md`에 대한 Write; plan의 sync commands를 위한 `Bash` |
-| `verify` | test/typecheck/lint를 위한 `Bash`; `.handoff/{plan,task,review,backlog}.md`에 대한 Edit/Delete |
+| `execute` | plan에 명시된 소스 파일에 대한 Edit; `.handoff/task.md`에 대한 Write; plan의 sync commands와 config의 `typecheck`를 위한 `Bash` |
+| `verify` | test/lint를 위한 `Bash` (typecheck는 execute가 담당); `.handoff/{plan,task,review,backlog}.md`에 대한 Edit/Delete |
 
 ### Claude Code
 
@@ -96,16 +98,19 @@ Cursor, Codex, Gemini CLI, Aider 등은 각자의 권한 모델이 있습니다.
 
 `/setup-handoff`이 `.handoff/config.md`를 작성합니다. 검증 명령, 응답 언어, 문서 경로를 바꾸려면 직접 편집하세요. `/setup-handoff`를 다시 돌리면 덮어쓰고, `/setup-handoff --auto`는 인터뷰를 완전히 건너뜁니다 (자동 감지에 실패한 항목만 묻는 fallback 포함).
 
-## v1 범위
+## 범위
 
 - 4개 스킬, 엄격한 boundary와 `.handoff/*.md` 디스크 기반 핸드오프
 - Stack-agnostic + **모노레포 인식** 스캔 (pnpm/npm/yarn/turbo/lerna/nx/cargo/go workspaces; workspace 별 docs + verification 후보)
 - Setup 인터뷰가 **응답 언어를 가장 먼저** 물음 — 그 후의 모든 출력 (status 메시지, 작성되는 `.md` 파일)이 해당 언어로
 - Doc index는 클릭 가능한 markdown 링크 + 짧은 설명
 - **Plan이 verification 범위 결정** — `/verify`는 `plan.md`의 `## Verification plan`에 적힌 명령만 실행 (docs-only 변경 같으면 rationale과 함께 전체 skip); 섹션이 없으면 `config.md`로 fallback
+- **`/execute`의 컴파일 체크** — config의 `typecheck`를 execute 안에서 safety net으로 실행. verify 가기 전에 타입 에러 잡고, plan 범위 안에서 1회 fix 시도 후 blocker. (v0.3.0)
+- **위험 태그 change list** — plan 항목에 `low` / `medium` / `high` 위험 태그 부여 가능. execute가 태그로 항목별 체크 빈도를 조절 (low = 끝에 1회, medium = 항목별 컴파일 체크, high = 항목별 체크 + 항목별 task.md 갱신). 태그는 granularity만, 권한은 불변. (v0.3.0)
+- **다단계 plan (`## Phases`)** — 큰 작업을 여러 plan→execute→verify 사이클에 걸쳐 진행. verify가 phase 통과 시 마커만 advance하고 마지막 phase까지 plan.md 유지. Backlog 정리도 마지막 phase까지 보류. (v0.3.0)
 - 선택적 **병렬화** — `/plan`이 `## Parallelization`에 독립 단위 식별; `/execute`가 host(Claude Code Task tool 등) 지원 시 group별 subagent로 분할 dispatch
 - setup-handoff의 `--auto` 모드 (인터뷰 스킵, 자동 감지 실패 항목만 fallback)
-- verify 통과 시 backlog 자동 정리
+- verify 통과 시 backlog 자동 정리 (single-cycle 또는 final-phase에서만)
 
 ## v1 제외 (Out of scope)
 

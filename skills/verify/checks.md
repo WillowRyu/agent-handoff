@@ -2,6 +2,8 @@
 
 `plan.md`'s `## Verification plan` section is authoritative — verify runs exactly what's listed there. Config's Verification Commands are a fallback only when plan omits the section.
 
+**Note on typecheck.** As of v0.3.0, `typecheck` is `/execute`'s responsibility (it's run as the compile-check safety net there). `/verify` does NOT run typecheck by default. The plan's Verification plan typically lists test + lint only. If a plan explicitly lists a typecheck command under Verification plan, verify will still run it (idempotent re-check in fresh context) — but this is rare and only useful for paranoid double-checking.
+
 ## 1. Read the plan's verification commands
 
 Read `.handoff/plan.md`'s `## Verification plan` section.
@@ -10,7 +12,7 @@ Read `.handoff/plan.md`'s `## Verification plan` section.
 |---|---|
 | Lists concrete commands (one per line, format `` - `<cmd>` — <expectation> ``) | Run each command in order; capture stdout + stderr + exit per command |
 | Says `(none — <rationale>)` | Skip command execution entirely. In review.md note "Verification commands skipped per plan: <rationale>". Proceed directly to step 3 (plan vs change diff). |
-| Section missing or empty | Fall back: run `config.verification.test`, `config.verification.typecheck`, `config.verification.lint` (skip any that are empty in config; note skipped) |
+| Section missing or empty | Fall back: run `config.verification.test` and `config.verification.lint` (skip any that are empty; note skipped). Do NOT run `config.verification.typecheck` — execute already did. |
 
 ## 2. Per-command result handling
 

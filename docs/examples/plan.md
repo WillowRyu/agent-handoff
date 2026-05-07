@@ -43,5 +43,6 @@ Two independent groups — `/execute` may dispatch one subagent per group:
 ## Verification plan
 
 - `pnpm turbo test` — all tests pass.
-- `pnpm turbo typecheck` — no errors.
 - `pnpm lint` — no errors.
+
+(Typecheck is run by `/execute` as the compile-check safety net — `pnpm turbo typecheck` per `config.md`. Not repeated here.)

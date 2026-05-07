@@ -11,8 +11,9 @@
 | Check | Command | Result |
 |---|---|---|
 | Tests | `pnpm turbo test` | ✅ 247 tests passed |
-| Typecheck | `pnpm turbo typecheck` | ✅ no errors |
 | Lint | `pnpm lint` | ✅ no errors |
+
+(Compile check `pnpm turbo typecheck` was run by `/execute` and passed — not re-run here.)
 
 ## Plan vs change diff
 
