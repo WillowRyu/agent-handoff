@@ -104,7 +104,7 @@ Cursor, Codex, Gemini CLI, Aider, etc. each have their own permission models. Th
 
 `/setup-handoff` writes `.handoff/config.md`. The file is plain markdown — edit it directly, or ask your agent to edit it, at any time to update verification commands, response language, the convention doc path, or the documentation index. The skills don't touch `config.md` mid-cycle (`/plan`, `/execute`, `/verify` only read it), so incremental edits between cycles are safe.
 
-Re-running `/setup-handoff` rewrites `config.md` from scratch (overwriting any custom additions); `/setup-handoff --auto` skips the interview entirely and falls back to asking only for items it couldn't auto-detect.
+Re-running `/setup-handoff` rewrites `config.md` from scratch (overwriting any custom additions); `/setup-handoff --auto` skips the interview entirely and falls back to asking only for items it couldn't auto-detect. In don't-ask mode or other non-interactive environments, the skill uses sensible defaults silently and reports them in a summary note.
 
 ## What's in scope
 
@@ -117,7 +117,8 @@ Re-running `/setup-handoff` rewrites `config.md` from scratch (overwriting any c
 - **Risk-tagged change list items** — plan items can carry `low` / `medium` / `high` risk; execute uses tags to adjust per-item check granularity (low = end-of-batch only, medium = per-item compile check, high = per-item check + per-item task.md update). Tags govern granularity, never authority. (v0.3.0)
 - **Multi-phase plans** — `## Phases` section lets a single plan span multiple plan→execute→verify cycles; verify advances markers on pass and retains plan.md until the final phase. Backlog closure deferred to last phase. (v0.3.0)
 - Optional **parallelization** — `/plan` identifies independent units in `## Parallelization`; `/execute` can dispatch one subagent per group when the host supports it (Claude Code's Task tool, etc.)
-- `--auto` mode for setup-handoff (skip interview, per-item fallback when detection fails)
+- `--auto` mode for setup-handoff (skip interview, per-item fallback when detection fails; non-interactive fallback uses defaults silently when `AskUserQuestion` is blocked) (v0.4.0)
+- **Permission auto-approval hook** — bundled `hooks/hooks.json` auto-approves `.handoff/**` writes (Write/Edit/MultiEdit) when installed as a Claude Code plugin; eliminates per-write prompts after first install (v0.4.0)
 - Backlog auto-resolve on verify pass (single-cycle or final-phase only)
 
 ## What's out of scope

@@ -104,7 +104,7 @@ Cursor, Codex, Gemini CLI, Aider 등은 각자의 권한 모델이 있습니다.
 
 `/setup-handoff`이 `.handoff/config.md`를 작성합니다. 평범한 markdown 파일이라 언제든 직접 편집하거나 에이전트에게 편집을 시킬 수 있습니다 — 검증 명령, 응답 언어, 컨벤션 doc 경로, 문서 인덱스 추가/수정 모두 자유. 스킬들은 사이클 도중 `config.md`를 건드리지 않으므로 (`/plan`, `/execute`, `/verify`는 read-only) 사이클 사이에 점진적으로 편집해도 안전합니다.
 
-`/setup-handoff`를 다시 돌리면 `config.md`를 처음부터 다시 작성 (커스텀 추가분 유실), `/setup-handoff --auto`는 인터뷰를 완전히 건너뜁니다 (자동 감지 실패 항목만 묻는 fallback 포함).
+`/setup-handoff`를 다시 돌리면 `config.md`를 처음부터 다시 작성 (커스텀 추가분 유실), `/setup-handoff --auto`는 인터뷰를 완전히 건너뜁니다 (자동 감지 실패 항목만 묻는 fallback 포함). don't-ask 모드 등 비인터랙티브 환경에서는 묻는 대신 기본값을 silent하게 사용하고 어떤 항목이 default로 채워졌는지 마지막에 한 줄로 안내합니다.
 
 ## 범위
 
@@ -117,7 +117,8 @@ Cursor, Codex, Gemini CLI, Aider 등은 각자의 권한 모델이 있습니다.
 - **위험 태그 change list** — plan 항목에 `low` / `medium` / `high` 위험 태그 부여 가능. execute가 태그로 항목별 체크 빈도를 조절 (low = 끝에 1회, medium = 항목별 컴파일 체크, high = 항목별 체크 + 항목별 task.md 갱신). 태그는 granularity만, 권한은 불변. (v0.3.0)
 - **다단계 plan (`## Phases`)** — 큰 작업을 여러 plan→execute→verify 사이클에 걸쳐 진행. verify가 phase 통과 시 마커만 advance하고 마지막 phase까지 plan.md 유지. Backlog 정리도 마지막 phase까지 보류. (v0.3.0)
 - 선택적 **병렬화** — `/plan`이 `## Parallelization`에 독립 단위 식별; `/execute`가 host(Claude Code Task tool 등) 지원 시 group별 subagent로 분할 dispatch
-- setup-handoff의 `--auto` 모드 (인터뷰 스킵, 자동 감지 실패 항목만 fallback)
+- setup-handoff의 `--auto` 모드 (인터뷰 스킵, 자동 감지 실패 항목만 fallback; `AskUserQuestion`이 차단된 don't-ask 모드 등에서는 묻는 대신 기본값을 silent하게 사용) (v0.4.0)
+- **권한 자동 승인 hook** — Claude Code 플러그인 설치 시 번들된 `hooks/hooks.json`이 `.handoff/**` 쓰기 (Write/Edit/MultiEdit)를 자동 승인. 첫 설치 후 매번 권한 prompt 안 뜸 (v0.4.0)
 - verify 통과 시 backlog 자동 정리 (single-cycle 또는 final-phase에서만)
 
 ## 제외 (Out of scope)
