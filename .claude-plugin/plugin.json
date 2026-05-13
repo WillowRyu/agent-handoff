@@ -1,6 +1,6 @@
 {
   "name": "agent-handoff",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Strict 3-stage handoff workflow (plan → execute → verify) for coding agents. Disk-backed state enables fresh-context code review and multi-stage verification across chat contexts. Supports multi-phase plans and parallel subagent execution.",
   "keywords": [
     "handoff",
