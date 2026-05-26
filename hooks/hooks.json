@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/auto-approve-handoff.sh"
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/auto-approve-handoff.js"
           }
         ]
       }
