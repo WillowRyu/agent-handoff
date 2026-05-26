@@ -7,8 +7,7 @@
       "name": "agent-handoff",
       "source": {
         "source": "github",
-        "repo": "WillowRyu/agent-handoff",
-        "ref": "windows-support"
+        "repo": "WillowRyu/agent-handoff"
       }
     }
   ]
