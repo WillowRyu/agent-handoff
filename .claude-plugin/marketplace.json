@@ -1,0 +1,10 @@
+{
+  "name": "agent-handoff",
+  "owner": { "name": "WillowRyu" },
+  "plugins": [
+    {
+      "name": "agent-handoff",
+      "source": "."
+    }
+  ]
+}
